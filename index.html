@@ -16,6 +16,16 @@
       color: #333;
     }
 
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
     .option {
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -54,6 +64,8 @@
 <body>
   <h2>How are we doing?</h2>
 
+  <input type="text" id="name" placeholder="Your name (optional)" />
+
   <div class="option" onclick="selectOption(this)">Service is fine but haven’t found much time to utilise. Will get round to it in the near future.</div>
   <div class="option" onclick="selectOption(this)">Currently undecided. Could be persuaded to continue subscription but would require better service.</div>
   <div class="option" onclick="selectOption(this)">I’m not at all happy. Need to consider my options.</div>
@@ -63,7 +75,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    emailjs.init("YM1ek1U-Qb7ji1Uz1"); // Replace this with your actual key
+    emailjs.init("YM1ek1U-Qb7ji1Uz1"); // Your EmailJS public key
 
     let selectedOption = "";
 
@@ -74,13 +86,16 @@
     }
 
     function submitResponse() {
+      const name = document.getElementById("name").value.trim();
+
       if (!selectedOption) {
         alert("Please select an option first.");
         return;
       }
 
       emailjs.send("service_54cgqid", "template_bhxovol", {
-        response_text: selectedOption
+        response_text: selectedOption,
+        name: name || "Anonymous"
       }).then(() => {
         window.location.href = "thankyou.html";
       }, (err) => {
